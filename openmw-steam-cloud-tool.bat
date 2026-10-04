@@ -1,9 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set vanilla_saves_folder=%~1
-set openmw_saves_folder=%~2
-set openmw_executable_path=%~3
+set vanilla_saves_folder=%CD%\Saves
+set openmw_saves_folder=%~1
+set openmw_executable_path=%~2
 
 echo Vanilla saves folder set to: %vanilla_saves_folder%.
 echo OpenMW saves folder set to: %openmw_saves_folder%.
