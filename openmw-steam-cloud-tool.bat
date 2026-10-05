@@ -4,6 +4,7 @@ setlocal enabledelayedexpansion
 set vanilla_saves_folder=%CD%\Saves
 set openmw_saves_folder=%~1
 set openmw_executable_path=%~2
+set openmw_executable_folder=%~dp2
 
 echo Vanilla saves folder set to: %vanilla_saves_folder%.
 echo OpenMW saves folder set to: %openmw_saves_folder%.
@@ -20,6 +21,7 @@ for %%F in (omwsave-*.ess) do (
 )
 
 echo Starting OpenMW...
+cd /d %openmw_executable_folder%
 "%openmw_executable_path%"
 
 echo Copying OpenMW save files from OpenMW saves folder to vanilla saves folder...
