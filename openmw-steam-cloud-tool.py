@@ -1,5 +1,6 @@
 import shutil, subprocess, argparse
 from pathlib import Path
+from loguru import logger
 
 def parse_arguments() -> argparse.Namespace:
     arguments_parser = argparse.ArgumentParser()
@@ -35,23 +36,27 @@ def convert_filename(filename: str, conversion_pattern: str) -> str:
 def copy_saves_to_directory(source_path: Path, destination_path: Path, yield_pattern: str, conversion_pattern: str) -> None:
     for file_path in source_path.glob(yield_pattern):
         filename = file_path.name
+        logger.info(f"Found save file: {filename}.")
         converted_filename = convert_filename(filename, conversion_pattern)
+        logger.info(f"Filename converted to: {converted_filename}.")
         copy_destination = destination_path / converted_filename
+        logger.info(f"Copying save to {copy_destination}...")
         shutil.copy2(file_path, copy_destination)
+        logger.info(f"Save file copied successfully.")
 
 if __name__ == "__main__":
     arguments = parse_arguments()
 
-    print("Copying OpenMW save files from vanilla saves folder to OpenMW saves folder...")
+    logger.info("Copying OpenMW save files from vanilla saves folder to OpenMW saves folder...")
     copy_saves_to_directory(source_path = Path(arguments.vanilla_saves_folder),
                             destination_path = Path(arguments.openmw_saves_folder),
                             yield_pattern = "omwsave-*.ess",
                             conversion_pattern = "openmw")
 
-    print("Starting OpenMW...")
+    logger.info("Starting OpenMW...")
     subprocess.run(arguments.openmw_executable_path)
 
-    print("Copying OpenMW save files from OpenMW saves folder to vanilla saves folder...")
+    logger.info("Copying OpenMW save files from OpenMW saves folder to vanilla saves folder...")
     copy_saves_to_directory(source_path = Path(arguments.openmw_saves_folder),
                             destination_path = Path(arguments.vanilla_saves_folder),
                             yield_pattern = "*.omwsave",
